@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "lib-bot"
+version = "0.1.0"
+description = ""
+authors = ["rwrq22 <61651734+rwrq22@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "lib_bot"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.2.1"
+djangorestframework = "^3.14.0"
+django-cors-headers = "^4.0.0"
+channels = {version = ">=4.0.0,<4.1.0", extras = ["daphne"]}
+redis = "<4.4.0"
+channels-redis = "^4.0.0"
+django-environ = "^0.10.0"
+pytest-django = "^4.5.2"
+pytest-testdox = "^3.0.1"
+pytest-asyncio = "^0.21.0"
+beautifulsoup4 = "^4.12.2"
+django-bootstrap5 = "^23.3"
+requests = "^2.31.0"
+nltk = "^3.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
