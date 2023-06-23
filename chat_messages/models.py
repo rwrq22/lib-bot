@@ -1,10 +1,17 @@
 from django.db import models
 from common.models import CommonModel
 
-import nltk
+### nltk로 키워드 추출###
+""" import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize
-from nltk.stem import WordNetLemmatizer
+from nltk.stem import WordNetLemmatizer """
+
+### openai ###
+import os
+import openai
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class Message(CommonModel):
@@ -13,7 +20,25 @@ class Message(CommonModel):
         default="",
     )
 
+    ########### 답변 생성 함수(openai 버전) ############
     def generate_response(self):
+        completion = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a Hongik University library chatbot",
+                },
+                {
+                    "role": "user",
+                    "content": f"{self.text}",
+                },
+            ],
+        )
+        return completion["choices"][0]["message"]["content"]
+
+    ########### 답변 생성 함수(NLTK 버전) ############
+    """ def generate_response(self):
         sentence = self.text
         # 문장을 소문자로 변환
         sentence = sentence.lower()
@@ -33,7 +58,7 @@ class Message(CommonModel):
         tagged_tokens = nltk.pos_tag(tokens)
         keywords = [token for token, pos in tagged_tokens if pos.startswith("N")]
 
-        return keywords
+        return keywords """
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -44,6 +69,7 @@ class Message(CommonModel):
         return "Messages"
 
 
+### 사용 안함
 class ChatResponse(CommonModel):
     text = models.TextField()
 
